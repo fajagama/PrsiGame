@@ -42,8 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Card.cs" />
+    <Compile Include="CardInfo.cs" />
+    <Compile Include="CardPack.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\AceRule.cs" />
+    <Compile Include="Rules\NormalRule.cs" />
+    <Compile Include="Rules\OberRule.cs" />
+    <Compile Include="Rules\Rule.cs" />
+    <Compile Include="Rules\SevenRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
