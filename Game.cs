@@ -18,6 +18,7 @@ namespace PrsiGame
         private bool _GameRun = true;
 
         public Player CurrendPlayer { get { return _Players[_CurrentPlayer]; } }
+        public bool GameOver { get { return !_GameRun; } }
 
         public Game(int PlayersNumber)
         {
@@ -43,14 +44,12 @@ namespace PrsiGame
 
             for (int i = 0; i < CurrendPlayer.Cards.Count; i++)
                 Console.WriteLine((i + 1) + " - for " + CurrendPlayer.Cards[i]);
-
-            int PlayerInput;
-
+            
             while (true)
             {
                 try
                 {
-                    PlayerInput = Int32.Parse(Console.ReadLine());
+                    int PlayerInput = Int32.Parse(Console.ReadLine());
                     if (PlayerInput == 0)
                         PlayerTakeCard();
                     else
@@ -59,23 +58,24 @@ namespace PrsiGame
 
                     break;
                 }
-                catch (FormatException)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("No, you can not do ths! Try it again.");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine("No, you can not do ths! Try it again.");
+                    if (ex is FormatException || ex is ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("No, you can not do ths! Try it again.");
+                        return;
+                    }
+                    if(ex is InvalidOperationException)
+                    {
+                        Console.WriteLine("No more cards left.");
+                        break;
+                    }
+                    throw;
                 }
             }
             NextPlayer();
         }
-
-        public Boolean GameOver()
-        {
-            return !_GameRun;
-        }
-
+        
         private void RegisterPlayers(int PlayersNumber)
         {
             Console.WriteLine("Players registration.");
@@ -90,10 +90,8 @@ namespace PrsiGame
         private void CardDistribution()
         {
             foreach(Player player in _Players)
-            {
                 for (int i = 0; i < 4; i++)
                     player.AddCard(_MainCardPack.RemoveCard());
-            }
         }
 
         private void PlayerTakeCard()
@@ -112,7 +110,7 @@ namespace PrsiGame
                     i--;
                 }
             }
-            if (!(_ActiveRule is NormalRule || _ActiveRule is OberRule))
+            if (!(_ActiveRule is OberRule))
                 _ActiveRule = new NormalRule();
         }
 
@@ -142,7 +140,7 @@ namespace PrsiGame
                     _ActiveRule = new AceRule();
                     break;
                 case CardInfo.Values.Ober:
-                    _ActiveRule = new OberRule(ChoiseType());
+                    _ActiveRule = new OberRule(ChoiseNewType());
                     break;
                 default:
                     _ActiveRule = new NormalRule();
@@ -150,12 +148,12 @@ namespace PrsiGame
             }
         }
 
-        private CardInfo.Types ChoiseType()
+        private CardInfo.Types ChoiseNewType()
         {
+            int countTmp = 0;
             foreach (CardInfo.Types Type in Enum.GetValues(typeof(CardInfo.Types)))
-            {
-                Console.WriteLine(Type);
-            }
+                Console.WriteLine((countTmp++) + " - " + Type);
+
             Console.WriteLine("Write 0 - 3 for your choice");
 
             while (true)
@@ -164,17 +162,16 @@ namespace PrsiGame
                 {
                     return (CardInfo.Types)Enum.GetValues(typeof(CardInfo.Types)).GetValue(Int32.Parse(Console.ReadLine()));
                 }
-                catch (IndexOutOfRangeException)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("No, you can not do ths! Try it again.");
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("No, you can not do ths! Try it again.");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine("No, you can not do ths! Try it again.");
+                    if (ex is IndexOutOfRangeException || ex is FormatException || ex is ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("No, you can not do ths! Try it again.");
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }

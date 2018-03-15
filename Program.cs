@@ -12,14 +12,14 @@ namespace PrsiGame
         {
             Game LetsPlay = new Game(2);
 
-            while (!LetsPlay.GameOver())
+            while (!LetsPlay.GameOver)
             {
                 LetsPlay.Turn();
             }
             Console.Clear();
             Console.WriteLine("And winner is");
             Console.WriteLine(LetsPlay.CurrendPlayer.ToString());
-            Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }
