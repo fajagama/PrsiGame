@@ -10,15 +10,10 @@ namespace PrsiGame
     {
         static void Main(string[] args)
         {
-            Game LetsPlay = new Game(2);
-
-            while (!LetsPlay.GameOver)
-            {
-                LetsPlay.Turn();
-            }
-            Console.Clear();
-            Console.WriteLine("And winner is");
-            Console.WriteLine(LetsPlay.CurrendPlayer.ToString());
+            Game LetsPlay = new Game();
+            LetsPlay.RegisterPlayers(2);
+            LetsPlay.StartGame();
+            
             Console.ReadLine();
         }
     }

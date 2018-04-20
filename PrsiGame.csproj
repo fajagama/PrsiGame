@@ -46,6 +46,7 @@
     <Compile Include="CardInfo.cs" />
     <Compile Include="CardPack.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="PrsiGame.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
